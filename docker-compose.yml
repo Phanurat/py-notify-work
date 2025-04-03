@@ -1,0 +1,11 @@
+version: '3.8'  # ใช้ version 3.8
+
+services:
+  python-app:
+    build: .
+    container_name: python-app
+    restart: always  # ตั้งให้ container รีสตาร์ทอัตโนมัติถ้า container หยุดทำงาน
+    volumes:
+      - .:/app  # เชื่อมโยงโฟลเดอร์ปัจจุบันในเครื่องไปยัง container
+    environment:
+      - PYTHONUNBUFFERED=1  # ตั้งค่าให้ Python ไม่บัฟเฟอร์ output
