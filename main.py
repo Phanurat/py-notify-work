@@ -2,19 +2,22 @@ import requests
 import json
 from datetime import datetime, timedelta
 import time
+from zoneinfo import ZoneInfo
 
 # LINE API access token and recipient ID
-access_token = '7tb3Jg/mVxCxrjd2GNueeIKE1fJUqygall4D+iiLGYblgi0lwrDXavuT51O4t0d0hiCDxPpbURV/zlM7zf1yPYl52ioR4mLmZu7gn9R2NLy87/4+NOu5EUSwKfIRB85WUGpJX0Rh9e16LOKH/oSoPQdB04t89/1O/w1cDnyilFU='
+access_token = '7tb3Jg/...YOUR_TOKEN...'
 sent_to = 'Ceb7da36934d84c592ac29bb1ebbad9b9'
+
+TH_TIMEZONE = ZoneInfo("Asia/Bangkok")
 
 def fetch_and_send():
     """ดึงข้อมูลจาก API และส่งข้อความไปยัง LINE"""
-    url = "https://script.google.com/macros/s/AKfycbx-rb5JmsvFbr-88bkXZiIATiKp5egXKogpqeKZsjIMUTZM3OSVrPkzFyuc1ncvsp15Tg/exec"
+    url = "https://script.google.com/macros/s/...YOUR_API..."
     response = requests.get(url)
 
     if response.status_code == 200:
         data = response.json()
-        target_date = datetime.today() + timedelta(days=1)
+        target_date = datetime.now(TH_TIMEZONE) + timedelta(days=1)
 
         for entry in data.get('data', []):
             date_str = entry['date']
@@ -41,8 +44,8 @@ def fetch_and_send():
                     'messages': [{'type': 'text', 'text': message}]
                 }
 
-                response = requests.post('https://api.line.me/v2/bot/message/push', 
-                                         headers=headers, 
+                response = requests.post('https://api.line.me/v2/bot/message/push',
+                                         headers=headers,
                                          data=json.dumps(data))
 
                 if response.status_code == 200:
@@ -55,16 +58,14 @@ def fetch_and_send():
 def main():
     """เช็คเวลาและเรียกใช้ fetch_and_send() เมื่อถึง 20:00 น."""
     while True:
-        now = datetime.now()
+        now = datetime.now(TH_TIMEZONE)
         if now.hour == 20 and now.minute == 0:
             print("⏰ เวลาถึง 20:00 แล้ว! กำลังส่งข้อความ...")
             fetch_and_send()
-            time.sleep(60)  # รอ 60 วินาที เพื่อป้องกันการส่งข้อความซ้ำ
+            time.sleep(60)  # ป้องกันการส่งซ้ำ
         else:
-            print("กำลังรอเวลาเพื่อจะส่ง")
-            time.sleep(60)
-
-        time.sleep(30)  # ตรวจสอบทุกๆ 30 วินาที
+            print(f"⌚ {now.strftime('%H:%M:%S')} กำลังรอเวลาเพื่อส่ง...")
+            time.sleep(30)
 
 if __name__ == "__main__":
     main()

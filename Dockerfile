@@ -10,5 +10,7 @@ COPY . /app
 # ติดตั้ง dependencies
 RUN pip install --no-cache-dir -r requirements.txt
 
+ENV TZ=Asia/Bangkok
+
 # รันโปรแกรม
 CMD ["python", "main.py"]
