@@ -5,14 +5,14 @@ import time
 from zoneinfo import ZoneInfo
 
 # LINE API access token and recipient ID
-access_token = '7tb3Jg/...YOUR_TOKEN...'
+access_token = '7tb3Jg/mVxCxrjd2GNueeIKE1fJUqygall4D+iiLGYblgi0lwrDXavuT51O4t0d0hiCDxPpbURV/zlM7zf1yPYl52ioR4mLmZu7gn9R2NLy87/4+NOu5EUSwKfIRB85WUGpJX0Rh9e16LOKH/oSoPQdB04t89/1O/w1cDnyilFU='
 sent_to = 'Ceb7da36934d84c592ac29bb1ebbad9b9'
 
 TH_TIMEZONE = ZoneInfo("Asia/Bangkok")
 
 def fetch_and_send():
     """ดึงข้อมูลจาก API และส่งข้อความไปยัง LINE"""
-    url = "https://script.google.com/macros/s/...YOUR_API..."
+    url = "https://script.google.com/macros/s/AKfycbx-rb5JmsvFbr-88bkXZiIATiKp5egXKogpqeKZsjIMUTZM3OSVrPkzFyuc1ncvsp15Tg/exec"
     response = requests.get(url)
 
     if response.status_code == 200:
@@ -59,8 +59,8 @@ def main():
     """เช็คเวลาและเรียกใช้ fetch_and_send() เมื่อถึง 20:00 น."""
     while True:
         now = datetime.now(TH_TIMEZONE)
-        if now.hour == 20 and now.minute == 0:
-            print("⏰ เวลาถึง 20:00 แล้ว! กำลังส่งข้อความ...")
+        if now.hour == 19 and now.minute == 30:
+            print("⏰ เวลาถึง 19:30 แล้ว! กำลังส่งข้อความ...")
             fetch_and_send()
             time.sleep(60)  # ป้องกันการส่งซ้ำ
         else:
